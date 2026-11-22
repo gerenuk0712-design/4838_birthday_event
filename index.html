@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#260909">
+<title>BAE ARYEONG'S BIRTHDAY GALA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+KR:wght@400;500;600;700&display=swap');
+:root{
+  --wine:#260909;
+  --wine2:#4a1015;
+  --gold:#d8b477;
+  --gold-bright:#f3d69f;
+  --cream:#f6e8ca;
+  --ink:#32140e;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:#190606;color:var(--cream);font-family:"Noto Serif KR",serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 50% 15%,#6a251b 0%,#310d10 45%,#140405 100%)}
+body.locked{overflow:hidden;height:100svh}
+a{color:inherit}
+
+/* VIP Gate Overlay */
+.vip-gate{position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at 50% 30%,#4e1318 0%,#1d0507 65%,#0d0203 100%);display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .8s ease,visibility .8s ease}
+.vip-gate.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.gate-card{width:min(420px,100%);border:2px solid #b88c51;outline:1px solid #d8b47755;outline-offset:6px;background:rgba(28,6,8,.92);padding:38px 24px;text-align:center;box-shadow:0 20px 60px #000c}
+.gate-crown{font-size:38px;color:var(--gold);text-shadow:0 0 18px #d9a65b;margin-bottom:6px}
+.gate-sub{font-family:"Cormorant Garamond",serif;font-size:12px;letter-spacing:.35em;color:#d9b77e;margin:0 0 10px}
+.gate-title{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:600;color:var(--gold-bright);margin:0 0 16px;letter-spacing:.05em}
+.gate-desc{font-size:13px;line-height:1.8;color:#ead4b0;margin:0 0 24px}
+.gate-input-wrap{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+.gate-input{width:170px;background:#140304;border:1px solid #b88c51;color:var(--gold-bright);font-family:"Cormorant Garamond",serif;font-size:24px;letter-spacing:.35em;text-align:center;padding:10px 12px;outline:none}
+.gate-input::placeholder{letter-spacing:.15em;font-size:14px;color:#8e6b40}
+.gate-input:focus{border-color:var(--gold-bright);box-shadow:0 0 15px #d8b47744}
+.gate-btn{background:linear-gradient(180deg,#5b191e,#360c10);border:1px solid var(--gold);color:var(--gold-bright);font-family:"Noto Serif KR",serif;font-size:13px;padding:10px 20px;cursor:pointer;transition:all .2s}
+.gate-btn:hover,.gate-btn:active{background:#732228}
+.gate-error{min-height:20px;font-size:12px;color:#ff8f8f;margin:8px 0 0}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.shake{animation:shake .38s ease}
+
+/* Confetti Canvas & Floating Music Control */
+#fx-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9998}
+.music-ctrl{position:fixed;right:16px;bottom:16px;z-index:900;display:flex;align-items:center;gap:8px;background:rgba(36,9,11,.9);border:1px solid #b88c51;color:var(--gold-bright);padding:10px 14px;border-radius:999px;font-size:12px;cursor:pointer;box-shadow:0 6px 20px #0009;backdrop-filter:blur(6px)}
+.music-ctrl.playing .eq{animation:pulse 1s infinite alternate}
+@keyframes pulse{from{opacity:.5;transform:scale(.92)}to{opacity:1;transform:scale(1.12)}}
+
+/* Hero */
+.hero{min-height:100svh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:64px 20px 56px;overflow:hidden}
+.hero:before,.hero:after{content:"";position:absolute;top:0;bottom:0;width:min(19vw,220px);opacity:.92;pointer-events:none}
+.hero:before{left:0;background:linear-gradient(90deg,#160304,#65151d 35%,#2b080c 72%,transparent);clip-path:polygon(0 0,100% 0,78% 12%,100% 28%,75% 48%,100% 68%,76% 86%,100% 100%,0 100%)}
+.hero:after{right:0;background:linear-gradient(270deg,#160304,#65151d 35%,#2b080c 72%,transparent);clip-path:polygon(0 0,100% 0,100% 100%,0 100%,24% 86%,0 68%,25% 48%,0 28%,22% 12%)}
+.hero-inner{position:relative;z-index:1;width:min(850px,100%);padding:24px 10px}
+.crown{font-size:44px;color:var(--gold);text-shadow:0 0 20px #d9a65b;margin-bottom:10px}
+.crest{font-family:"Cormorant Garamond",serif;font-size:32px;font-style:italic;color:var(--gold);border:1px solid #a77b43;border-radius:50%;width:72px;height:72px;display:grid;place-items:center;margin:0 auto 22px;box-shadow:0 0 25px #d3a15a33}
+.eyebrow{font-size:11px;letter-spacing:.42em;color:#e5c58f;margin:0 0 16px}
+h1{font-family:"Cormorant Garamond",serif;font-size:clamp(40px,8vw,82px);line-height:.88;font-weight:600;letter-spacing:-.035em;margin:0;color:#f1d39b;text-shadow:0 3px 0 #5b2b13,0 0 25px #f3c47a66}
+h1 span{display:block}
+.tagline{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(17px,3vw,24px);color:#e8c997;margin:22px 0 26px}
+.gold-line{height:1px;max-width:420px;margin:24px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent);position:relative}
+.gold-line:after{content:"✦";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#3a1011;color:var(--gold);padding:0 12px}
+.intro{font-size:14px;line-height:2;color:#f3dfbd;max-width:590px;margin:0 auto}
+.countdown{display:flex;justify-content:center;gap:clamp(8px,3vw,24px);margin:32px auto 24px}
+.timebox{min-width:64px;padding:12px 10px;border:1px solid #b88c51;background:#24090bcc;box-shadow:inset 0 0 18px #d8b47712}
+.timebox strong{display:block;font-family:"Cormorant Garamond",serif;font-size:clamp(28px,5vw,42px);font-weight:500;color:#f3d69f;line-height:1}
+.timebox small{display:block;font-size:10px;letter-spacing:.15em;color:#d9b77e;margin-top:7px}
+.count-label{font-size:10px;letter-spacing:.3em;color:#d9b77e;margin-top:26px}
+
+/* Quick Nav */
+.quick-nav{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:0 auto 28px;padding:0 12px}
+.quick-nav a{text-decoration:none;font-size:11px;letter-spacing:.12em;padding:8px 13px;border:1px solid #a77a4688;background:#280a0c;color:#e7c58d}
+.quick-nav a:hover{background:#4f161a;border-color:var(--gold)}
+
+main{max-width:900px;margin:auto;padding:0 18px 80px}
+.section{margin:34px auto 52px;scroll-margin-top:20px}
+.section-title{text-align:center;color:#e7c58d;font-family:"Cormorant Garamond",serif;font-size:25px;letter-spacing:.13em;margin:0 0 22px}
+.section-title span{display:inline-block;border:1px solid #a77a46;padding:7px 26px;background:#3b1112;box-shadow:0 4px 18px #0005}
+.paper{background:radial-gradient(ellipse at center,#fff5dd,#ead2a5);color:var(--ink);border:5px double #986c3b;outline:1px solid #e9c98d;outline-offset:4px;padding:25px clamp(18px,5vw,48px);box-shadow:0 12px 35px #0008;position:relative}
+.paper:before,.paper:after{content:"❧";position:absolute;color:#a77a46;font-size:27px;top:7px}
+.paper:before{left:12px}.paper:after{right:12px;transform:scaleX(-1)}
+.detail-row{display:grid;grid-template-columns:105px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid #b994633d;font-size:14px;line-height:1.7}
+.detail-row:last-child{border:0}
+.detail-row b{font-family:"Cormorant Garamond",serif;letter-spacing:.06em;font-size:16px}
+.detail-row small{font-size:12px}
+.quote{text-align:center;font-style:italic;color:#e9c990;margin:24px 0 0;font-size:14px}
+
+/* Timeline */
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 12px}
+.event{text-align:center;padding:18px 10px 16px;border-top:1px solid #a77a46;position:relative}
+.event:before{content:"✦";position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#310d10;color:#d8b477;padding:0 8px}
+.event .time{font-family:"Cormorant Garamond",serif;font-size:22px;color:#f0d19a}
+.event .symbol{font-size:26px;margin:8px 0}
+.event p{font-size:13px;line-height:1.7;margin:0;color:#f1dfc3}
+
+/* Photo Gallery */
+.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.photo-card{position:relative;aspect-ratio:4/3;border:1px solid #b88c51;background:#24080a;overflow:hidden;cursor:pointer;box-shadow:0 8px 24px #0007}
+.photo-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease}
+.photo-card:hover img{transform:scale(1.05)}
+.photo-caption{position:absolute;inset:auto 0 0 0;padding:24px 12px 10px;background:linear-gradient(transparent,rgba(15,3,4,.9));font-size:12px;color:#f2d7a7;text-align:center}
+.photo-fallback{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;background:radial-gradient(circle,#4a1318,#220709);color:#d8b477}
+.photo-fallback span{font-size:28px;margin-bottom:8px}
+.photo-fallback small{font-size:11px;color:#cfa86e;line-height:1.5}
+
+/* Lightbox */
+.lightbox{position:fixed;inset:0;z-index:9990;background:rgba(10,2,3,.92);display:none;align-items:center;justify-content:center;padding:20px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:92vw;max-height:80svh;border:2px solid var(--gold);box-shadow:0 15px 40px #000}
+.lightbox-close{position:absolute;top:18px;right:20px;background:#3b1112;border:1px solid var(--gold);color:var(--gold-bright);width:38px;height:38px;font-size:18px;cursor:pointer}
+
+/* 3-Step Secret Puzzle */
+.puzzle-box{border:1px solid #b88c51;background:rgba(34,8,10,.88);padding:26px 20px;box-shadow:0 12px 32px #0008}
+.puzzle-steps{display:flex;justify-content:center;gap:10px;margin-bottom:20px}
+.step-pill{padding:5px 14px;border:1px solid #8a6437;font-size:11px;letter-spacing:.15em;color:#b89462}
+.step-pill.active{border-color:var(--gold-bright);background:#4d1519;color:var(--gold-bright)}
+.step-pill.done{border-color:#78c28c;background:#1a3a24;color:#b7f0c5}
+.puzzle-q{text-align:center;font-size:15px;line-height:1.8;color:#f5e1be;margin:0 0 8px}
+.puzzle-hint{text-align:center;font-size:12px;color:#cfa96e;margin:0 0 18px}
+.puzzle-form{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.puzzle-input{width:min(240px,100%);background:#160405;border:1px solid #b88c51;color:var(--gold-bright);padding:11px 14px;font-family:"Noto Serif KR",serif;font-size:14px;text-align:center;outline:none}
+.puzzle-msg{text-align:center;font-size:12px;min-height:18px;margin-top:10px;color:#ff9c9c}
+.reward-ticket{display:none;margin-top:10px;padding:24px 18px;border:2px dashed #d8b477;background:radial-gradient(circle at top,#5c1a20,#2a080b);text-align:center}
+.reward-ticket.unlocked{display:block;animation:fadeIn .6s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.reward-badge{display:inline-block;padding:4px 14px;border:1px solid var(--gold);font-size:11px;letter-spacing:.25em;color:var(--gold-bright);margin-bottom:10px}
+.reward-title{font-family:"Cormorant Garamond",serif;font-size:26px;color:#ffe2a8;margin:4px 0 10px}
+.reward-text{font-size:13px;line-height:1.85;color:#f4dfbd;margin:0}
+
+/* Guestbook / Celebration Messages */
+.msg-form{display:grid;gap:10px;margin-bottom:22px}
+.msg-row{display:grid;grid-template-columns:140px 1fr;gap:10px}
+.msg-input,.msg-textarea{width:100%;background:#fffaf0;border:1px solid #a77a46;color:var(--ink);font-family:"Noto Serif KR",serif;font-size:13px;padding:10px 12px;outline:none}
+.msg-textarea{min-height:76px;resize:vertical}
+.msg-submit{justify-self:end;background:#3b1112;border:1px solid #8a5e2f;color:#f4d9a6;padding:10px 22px;font-family:"Noto Serif KR",serif;font-size:13px;cursor:pointer}
+.msg-submit:hover{background:#5c1b1d}
+.msg-list{display:grid;gap:10px;max-height:340px;overflow-y:auto;padding-right:4px}
+.msg-item{background:rgba(255,250,238,.72);border-left:3px solid #8a5e2f;padding:11px 14px}
+.msg-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:4px;color:#6c4520}
+.msg-body{font-size:13px;line-height:1.65;color:var(--ink);margin:0;word-break:break-word}
+
+/* Notice & Footer */
+.notice{font-size:13px;line-height:2;padding-left:20px;margin:0}
+.notice li{padding-left:3px;margin:3px 0}
+.footer{text-align:center;padding:38px 15px 25px;color:#d9b77e;font-size:13px;line-height:2}
+.footer .big{font-family:"Cormorant Garamond",serif;font-size:22px;letter-spacing:.08em;color:#edce98}
+.actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn{display:inline-block;text-decoration:none;border:1px solid #c69a5e;color:#f2d7a7;padding:11px 18px;font-size:12px;letter-spacing:.04em;background:#3b1112;cursor:pointer}
+.btn:hover{background:#6b2525}
+
+/* Mobile Optimization */
+@media(max-width:600px){
+  .hero{min-height:92svh;padding:48px 16px 40px}
+  .hero:before,.hero:after{width:13vw;opacity:.5}
+  .crest{width:60px;height:60px;font-size:26px;margin-bottom:16px}
+  .intro{font-size:12.5px;line-height:1.9}
+  .timebox{min-width:58px;padding:10px 6px}
+  .detail-row{grid-template-columns:82px 1fr;font-size:12.5px}
+  .timeline{grid-template-columns:repeat(2,1fr);gap:16px 8px}
+  .event p{font-size:12px}
+  .paper{padding:24px 15px}
+  .section{margin:28px auto 40px}
+  .section-title{font-size:21px}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .msg-row{grid-template-columns:1fr}
+  .msg-submit{width:100%}
+  .gate-card{padding:30px 18px}
+  .gate-input-wrap{flex-direction:column;align-items:center}
+  .gate-input,.gate-btn{width:100%;max-width:240px}
+  .music-ctrl{right:12px;bottom:12px;padding:9px 12px;font-size:11px}
+}
+</style>
+</head>
+<body class="locked">
+
+<!-- VIP Password Gate -->
+<div class="vip-gate" id="vipGate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="gate-card" id="gateCard">
+    <div class="gate-crown">♛</div>
+    <p class="gate-sub">PRIVATE VIP ACCESS</p>
+    <h2 class="gate-title" id="gateTitle">ROYAL INVITATION</h2>
+    <p class="gate-desc">본 연회장은 초청된 귀빈만 입장 가능합니다.<br>VIP 초대 코드 4자리를 입력해 주세요.</p>
+    <form class="gate-input-wrap" id="gateForm">
+      <input class="gate-input" id="vipCode" type="password" inputmode="numeric" maxlength="4" placeholder="CODE" autocomplete="off" required>
+      <button class="gate-btn" type="submit">입장하기</button>
+    </form>
+    <p class="gate-error" id="gateError"></p>
+  </div>
+</div>
+
+<!-- Fireworks & Confetti Canvas -->
+<canvas id="fx-canvas"></canvas>
+
+<!-- Background Audio -->
+<audio id="bgm" src="birthday.mp3" loop preload="auto"></audio>
+<button class="music-ctrl" id="musicToggle" type="button" aria-label="배경음악 재생 및 일시정지">
+  <span class="eq">♪</span> <span id="musicLabel">BGM OFF</span>
+</button>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="crown">♛</div>
+    <div class="crest">B</div>
+    <p class="eyebrow">THE OFFICIAL INVITATION</p>
+    <h1><span>BAE ARYEONG'S</span><span>BIRTHDAY GALA</span></h1>
+    <p class="tagline">A Special Day, An Extraordinary Celebration</p>
+    <div class="gold-line"></div>
+    <p class="intro">존경하는 귀빈 여러분,<br>올 한 해, 우리에게 웃음과 행복을 선사한<br><b>배아령</b>의 탄신을 기념하기 위하여<br>성대한 축하의 자리를 마련하였습니다.<br><br>이에 귀하를 본 행사에 정중히 초대하오니,<br>부디 참석하시어 자리를 빛내주시기 바랍니다.</p>
+    <p class="count-label">THE CELEBRATION BEGINS IN</p>
+    <div class="countdown" aria-label="생일파티 카운트다운">
+      <div class="timebox"><strong id="days">00</strong><small>DAYS</small></div>
+      <div class="timebox"><strong id="hours">00</strong><small>HOURS</small></div>
+      <div class="timebox"><strong id="minutes">00</strong><small>MINUTES</small></div>
+      <div class="timebox"><strong id="seconds">00</strong><small>SECONDS</small></div>
+    </div>
+    <nav class="quick-nav" aria-label="섹션 바로가기">
+      <a href="#details">DETAILS</a>
+      <a href="#program">PROGRAM</a>
+      <a href="#gallery">GALLERY</a>
+      <a href="#puzzle">SECRET PUZZLE</a>
+      <a href="#guestbook">GUESTBOOK</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Invitation Details -->
+  <section class="section" id="details">
+    <h2 class="section-title"><span>INVITATION DETAILS</span></h2>
+    <div class="paper">
+      <div class="detail-row"><b>DATE</b><span>2026년 11월 29일 (일요일)</span></div>
+      <div class="detail-row"><b>TIME</b><span>12:00 – 16:00</span></div>
+      <div class="detail-row"><b>VENUE</b><span>서울 영등포구 당산로 180, 2층<br><b>프레누아</b> <small>(당산 파티룸 프레누아)</small></span></div>
+      <div class="detail-row"><b>DRESS CODE</b><span>Black and White<br><small>블랙 또는 화이트 계열의 의상을 착용해 주세요.</small></span></div>
+    </div>
+    <p class="quote">“당신의 참석이, 이 행사의 품격을 완성합니다.”</p>
+    <div class="actions">
+      <a class="btn" href="https://map.naver.com/p/search/서울%20영등포구%20당산로%20180%20프레누아" target="_blank" rel="noopener">장소 길찾기 ↗</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=서울%20영등포구%20당산로%20180" target="_blank" rel="noopener">지도 보기 ↗</a>
+    </div>
+  </section>
+
+  <!-- Program -->
+  <section class="section" id="program">
+    <h2 class="section-title"><span>PROGRAM</span></h2>
+    <div class="timeline">
+      <div class="event"><div class="time">12:00</div><div class="symbol">👑</div><p>주인공의<br>성대한 입장</p></div>
+      <div class="event"><div class="time">12:10</div><div class="symbol">🎬</div><p>공식 기념식 및<br>축하 선언</p></div>
+      <div class="event"><div class="time">12:20</div><div class="symbol">🎵</div><p>축하 공연 및<br>스페셜 무대</p></div>
+      <div class="event"><div class="time">13:20</div><div class="symbol">🧩</div><p>극비 프로젝트:<br>퍼즐을 찾아라</p></div>
+      <div class="event"><div class="time">14:00</div><div class="symbol">🍽️</div><p>축하 만찬 및<br>포틀럭</p></div>
+      <div class="event"><div class="time">15:30</div><div class="symbol">🎉</div><p>폐회 선언 및<br>행사장 정리</p></div>
+    </div>
+  </section>
+
+  <!-- Photo Gallery -->
+  <section class="section" id="gallery">
+    <h2 class="section-title"><span>ROYAL GALLERY</span></h2>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="photo-card" data-src="images/photo1.jpg">
+        <img src="images/photo1.jpg" alt="아령이의 빛나는 순간 1" onerror="handleImgError(this, 'CHAPTER I · RADIANCE')">
+        <div class="photo-caption">CHAPTER I · RADIANCE</div>
+      </div>
+      <div class="photo-card" data-src="images/photo2.jpg">
+        <img src="images/photo2.jpg" alt="아령이의 빛나는 순간 2" onerror="handleImgError(this, 'CHAPTER II · GRACE')">
+        <div class="photo-caption">CHAPTER II · GRACE</div>
+      </div>
+      <div class="photo-card" data-src="images/photo3.jpg">
+        <img src="images/photo3.jpg" alt="아령이의 빛나는 순간 3" onerror="handleImgError(this, 'CHAPTER III · JOY')">
+        <div class="photo-caption">CHAPTER III · JOY</div>
+      </div>
+      <div class="photo-card" data-src="images/photo4.jpg">
+        <img src="images/photo4.jpg" alt="아령이의 빛나는 순간 4" onerror="handleImgError(this, 'CHAPTER IV · MEMORIES')">
+        <div class="photo-caption">CHAPTER IV · MEMORIES</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3-Step Secret Puzzle -->
+  <section class="section" id="puzzle">
+    <h2 class="section-title"><span>SECRET PUZZLE</span></h2>
+    <div class="puzzle-box">
+      <div class="puzzle-steps">
+        <span class="step-pill active" id="pill0">STEP 1</span>
+        <span class="step-pill" id="pill1">STEP 2</span>
+        <span class="step-pill" id="pill2">STEP 3</span>
+      </div>
+
+      <div id="puzzleActiveArea">
+        <p class="puzzle-q" id="puzzleQuestion"></p>
+        <p class="puzzle-hint" id="puzzleHint"></p>
+        <form class="puzzle-form" id="puzzleForm">
+          <input class="puzzle-input" id="puzzleAnswer" type="text" placeholder="정답을 입력하세요" autocomplete="off" required>
+          <button class="btn" type="submit">봉인 해제</button>
+        </form>
+        <p class="puzzle-msg" id="puzzleMsg"></p>
+      </div>
+
+      <div class="reward-ticket" id="rewardTicket">
+        <div class="reward-badge">✦ ALL SECRETS UNLOCKED ✦</div>
+        <h3 class="reward-title">GOLDEN VIP PASS : FIRST TOAST</h3>
+        <p class="reward-text">
+          축하합니다! 3단계 비밀 퍼즐을 모두 해결하셨습니다.<br>
+          본 화면을 연회 당일 호스트에게 제시하시면<br>
+          <b>[스페셜 건배사 우선권 & 시크릿 기프트]</b> 혜택을 드립니다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guestbook -->
+  <section class="section" id="guestbook">
+    <h2 class="section-title"><span>CELEBRATION MESSAGES</span></h2>
+    <div class="paper">
+      <form class="msg-form" id="guestbookForm">
+        <div class="msg-row">
+          <input class="msg-input" id="guestName" type="text" maxlength="20" placeholder="성함 / 닉네임" required>
+          <textarea class="msg-textarea" id="guestText" maxlength="200" placeholder="아령이의 생일을 축하하는 따뜻한 메시지를 남겨주세요!" required></textarea>
+        </div>
+        <button class="msg-submit" type="submit">축하 메시지 남기기 ✦</button>
+      </form>
+      <div class="msg-list" id="msgList"></div>
+    </div>
+  </section>
+
+  <!-- Notice -->
+  <section class="section">
+    <h2 class="section-title"><span>NOTICE</span></h2>
+    <div class="paper">
+      <ol class="notice">
+        <li>본 행사는 아령이의 탄생을 기념하고 그 위대한 존재감을 널리 알리기 위해 개최됩니다.</li>
+        <li>모든 참석자는 주인공을 향한 아낌없는 축하와 뜨거운 박수를 준비해야 합니다.</li>
+        <li>축하 공연 중 환호, 야유, 폭소 및 과도한 리액션은 적극 권장됩니다.</li>
+        <li>모든 참석자는 행사 종료 후 주최 측의 안내에 따라 행사장 정리에 적극 협조해야 합니다.</li>
+        <li>본 행사의 성공 여부는 주인공의 만족도와 참석자들의 웃음소리를 기준으로 평가됩니다.</li>
+        <li>행사 중 생성된 흑역사는 추후 단체 채팅방에서 재소환될 수 있습니다.</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>아령이의 가장 빛나고 찬란한 오늘을 위해,<br> 귀빈 여러분의 아낌없는 참석과 축복을 기다립니다.</p>
+    <div class="big">— BAE ARYEONG BIRTHDAY GALA —</div>
+    <p>ADMIT ONE · OFFICIAL GUEST</p>
+    <div class="gold-line"></div>
+    <small>WITH LOVE, THE BIRTHDAY GALA COMMITTEE</small>
+  </footer>
+</main>
+
+<!-- Image Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="닫기">✕</button>
+  <img id="lightboxImg" src="" alt="확대 사진">
+</div>
+
+<script>
+/* 1. VIP Gate & Audio & Confetti/Fireworks */
+const VIP_PASS = "4838";
+const vipGate = document.getElementById("vipGate");
+const gateCard = document.getElementById("gateCard");
+const gateForm = document.getElementById("gateForm");
+const vipCode = document.getElementById("vipCode");
+const gateError = document.getElementById("gateError");
+const bgm = document.getElementById("bgm");
+const musicToggle = document.getElementById("musicToggle");
+const musicLabel = document.getElementById("musicLabel");
+
+function playBgm(){
+  bgm.volume = 0.75;
+  bgm.play().then(() => {
+    musicToggle.classList.add("playing");
+    musicLabel.textContent = "BGM ON";
+  }).catch(() => {
+    musicToggle.classList.remove("playing");
+    musicLabel.textContent = "BGM PLAY";
+  });
+}
+
+musicToggle.addEventListener("click", () => {
+  if(bgm.paused){
+    playBgm();
+  } else {
+    bgm.pause();
+    musicToggle.classList.remove("playing");
+    musicLabel.textContent = "BGM OFF";
+  }
+});
+
+/* Fireworks & Confetti Engine */
+const canvas = document.getElementById("fx-canvas");
+const ctx = canvas.getContext("2d");
+let particles = [];
+let animRunning = false;
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+const FX_COLORS = ["#f3d69f", "#d8b477", "#fff4d4", "#e05353", "#ff9e7d", "#ffffff"];
+
+function launchCelebration(){
+  const w = canvas.width;
+  const h = canvas.height;
+  // Confetti shower from top
+  for(let i = 0; i < 120; i++){
+    particles.push({
+      type: "confetti",
+      x: Math.random() * w,
+      y: -20 - Math.random() * h * 0.4,
+      vx: (Math.random() - 0.5) * 4,
+      vy: 2 + Math.random() * 4.5,
+      size: 6 + Math.random() * 6,
+      rot: Math.random() * 360,
+      vRot: (Math.random() - 0.5) * 10,
+      color: FX_COLORS[Math.floor(Math.random() * FX_COLORS.length)],
+      alpha: 1,
+      decay: 0.004 + Math.random() * 0.004
+    });
+  }
+  // 3 Firework bursts
+  const bursts = [[w * 0.25, h * 0.3], [w * 0.75, h * 0.28], [w * 0.5, h * 0.22]];
+  bursts.forEach(([bx, by], idx) => {
+    setTimeout(() => {
+      for(let i = 0; i < 65; i++){
+        const angle = (Math.PI * 2 * i) / 65 + Math.random() * 0.1;
+        const speed = 2 + Math.random() * 6;
+        particles.push({
+          type: "spark",
+          x: bx,
+          y: by,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: 2.5 + Math.random() * 2.5,
+          color: FX_COLORS[Math.floor(Math.random() * FX_COLORS.length)],
+          alpha: 1,
+          decay: 0.014 + Math.random() * 0.01
+        });
+      }
+      startFxLoop();
+    }, idx * 280);
+  });
+  startFxLoop();
+}
+
+function startFxLoop(){
+  if(animRunning) return;
+  animRunning = true;
+  function step(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if(p.type === "spark"){
+        p.vy += 0.08;
+        p.vx *= 0.98;
+      } else {
+        p.rot += p.vRot;
+        p.x += Math.sin(p.y * 0.03) * 0.8;
+      }
+      p.alpha -= p.decay;
+      if(p.alpha > 0){
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        if(p.type === "confetti"){
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rot * Math.PI) / 180);
+          ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size * 0.55);
+        } else {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+    });
+    particles = particles.filter(p => p.alpha > 0 && p.y < canvas.height + 40);
+    if(particles.length > 0){
+      requestAnimationFrame(step);
+    } else {
+      animRunning = false;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+gateForm.addEventListener("submit", e => {
+  e.preventDefault();
+  if(vipCode.value.trim() === VIP_PASS){
+    vipGate.classList.add("hidden");
+    document.body.classList.remove("locked");
+    playBgm();
+    launchCelebration();
+  } else {
+    gateError.textContent = "초대 코드가 일치하지 않습니다. 다시 확인해 주세요.";
+    gateCard.classList.remove("shake");
+    void gateCard.offsetWidth;
+    gateCard.classList.add("shake");
+    vipCode.value = "";
+    vipCode.focus();
+  }
+});
+
+/* 2. Countdown */
+const target = new Date("2026-11-29T12:00:00+09:00").getTime();
+const pad = n => String(n).padStart(2, "0");
+function updateCountdown(){
+  let diff = target - Date.now();
+  if(diff <= 0){
+    document.querySelector(".count-label").textContent = "THE CELEBRATION IS NOW IN SESSION";
+    diff = 0;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById("days").textContent = pad(d);
+  document.getElementById("hours").textContent = pad(h);
+  document.getElementById("minutes").textContent = pad(m);
+  document.getElementById("seconds").textContent = pad(s);
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* 3. Photo Gallery Fallback & Lightbox */
+function handleImgError(img, label){
+  const card = img.parentElement;
+  card.dataset.missing = "1";
+  card.innerHTML = `<div class="photo-fallback"><span>♛</span><b>${label}</b><small>images/ 폴더에 사진을 넣으면<br>자동으로 갤러리에 표시됩니다</small></div>`;
+}
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+document.getElementById("galleryGrid").addEventListener("click", e => {
+  const card = e.target.closest(".photo-card");
+  if(!card || card.dataset.missing === "1") return;
+  lightboxImg.src = card.dataset.src;
+  lightbox.classList.add("open");
+});
+document.getElementById("lightboxClose").addEventListener("click", () => lightbox.classList.remove("open"));
+lightbox.addEventListener("click", e => { if(e.target === lightbox) lightbox.classList.remove("open"); });
+
+/* 4. 3-Step Secret Puzzle */
+const PUZZLES = [
+  {
+    q: "Q1. 본 갈라 파티의 드레스 코드는 무엇일까요?",
+    hint: "힌트: 두 가지 무채색의 조화 (영문 또는 한글)",
+    answers: ["blackandwhite", "black&white", "블랙앤화이트", "블랙화이트"]
+  },
+  {
+    q: "Q2. 11월 29일 연회가 열리는 당산 파티룸의 이름은?",
+    hint: "힌트: 초대장 VENUE 항목의 세 글자",
+    answers: ["프레누아", "prenoir"]
+  },
+  {
+    q: "Q3. 오늘 밤 가장 빛나는 주인공의 이름은 무엇일까요?",
+    hint: "힌트: BAE ARYEONG",
+    answers: ["배아령", "아령"]
+  }
+];
+
+let currentStep = Number(localStorage.getItem("gala_puzzle_step") || 0);
+const puzzleQuestion = document.getElementById("puzzleQuestion");
+const puzzleHint = document.getElementById("puzzleHint");
+const puzzleAnswer = document.getElementById("puzzleAnswer");
+const puzzleMsg = document.getElementById("puzzleMsg");
+const puzzleActiveArea = document.getElementById("puzzleActiveArea");
+const rewardTicket = document.getElementById("rewardTicket");
+
+function renderPuzzle(){
+  for(let i = 0; i < 3; i++){
+    const pill = document.getElementById("pill" + i);
+    pill.className = "step-pill";
+    if(i < currentStep) pill.classList.add("done");
+    else if(i === currentStep) pill.classList.add("active");
+  }
+  if(currentStep >= PUZZLES.length){
+    puzzleActiveArea.style.display = "none";
+    rewardTicket.classList.add("unlocked");
+  } else {
+    puzzleQuestion.textContent = PUZZLES[currentStep].q;
+    puzzleHint.textContent = PUZZLES[currentStep].hint;
+    puzzleAnswer.value = "";
+  }
+}
+
+document.getElementById("puzzleForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const norm = puzzleAnswer.value.toLowerCase().replace(/\s+/g, "");
+  if(PUZZLES[currentStep].answers.includes(norm)){
+    puzzleMsg.textContent = "";
+    currentStep++;
+    localStorage.setItem("gala_puzzle_step", String(currentStep));
+    renderPuzzle();
+    if(currentStep >= PUZZLES.length) launchCelebration();
+  } else {
+    puzzleMsg.textContent = "아쉽습니다! 초대장의 힌트를 다시 살펴보세요.";
+  }
+});
+renderPuzzle();
+
+/* 5. Celebration Messages (Guestbook) */
+const STORAGE_KEY = "aryeong_gala_messages_v1";
+const DEFAULT_MESSAGES = [
+  { name: "GALA COMMITTEE", text: "아령이의 찬란한 생일을 진심으로 축하합니다! 오늘 가장 빛나는 주인공이 되길.", date: "2026.11.29" }
+];
+
+function loadMessages(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return Array.isArray(saved) && saved.length ? saved : DEFAULT_MESSAGES;
+  } catch {
+    return DEFAULT_MESSAGES;
+  }
+}
+
+function renderMessages(){
+  const list = document.getElementById("msgList");
+  const items = loadMessages();
+  list.innerHTML = items.map(m => `
+    <div class="msg-item">
+      <div class="msg-head"><b>${escapeHtml(m.name)}</b><span>${escapeHtml(m.date)}</span></div>
+      <p class="msg-body">${escapeHtml(m.text)}</p>
+    </div>
+  `).join("");
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, s => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[s]));
+}
+
+document.getElementById("guestbookForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const name = document.getElementById("guestName").value.trim();
+  const text = document.getElementById("guestText").value.trim();
+  if(!name || !text) return;
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}.${pad(now.getMonth() + 1)}.${pad(now.getDate())}`;
+  const items = loadMessages();
+  items.unshift({ name, text, date: dateStr });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  document.getElementById("guestText").value = "";
+  renderMessages();
+});
+renderMessages();
+</script>
+</body>
+</html>
