@@ -18,40 +18,56 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
 body{margin:0;background:#190606;color:var(--cream);font-family:"Noto Serif KR",serif;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 50% 15%,#6a251b 0%,#310d10 45%,#140405 100%)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:radial-gradient(ellipse at 50% 15%,#6a251b 0%,#310d10 45%,#140405 100%)}
 body.locked{overflow:hidden;height:100svh}
 a{color:inherit}
 
-/* VIP Gate Overlay */
-.vip-gate{position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at 50% 30%,#4e1318 0%,#1d0507 65%,#0d0203 100%);display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .8s ease,visibility .8s ease}
-.vip-gate.hidden{opacity:0;visibility:hidden;pointer-events:none}
-.gate-card{width:min(420px,100%);border:2px solid #b88c51;outline:1px solid #d8b47755;outline-offset:6px;background:rgba(28,6,8,.92);padding:38px 24px;text-align:center;box-shadow:0 20px 60px #000c}
-.gate-crown{font-size:38px;color:var(--gold);text-shadow:0 0 18px #d9a65b;margin-bottom:6px}
-.gate-sub{font-family:"Cormorant Garamond",serif;font-size:12px;letter-spacing:.35em;color:#d9b77e;margin:0 0 10px}
-.gate-title{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:600;color:var(--gold-bright);margin:0 0 16px;letter-spacing:.05em}
-.gate-desc{font-size:13px;line-height:1.8;color:#ead4b0;margin:0 0 24px}
-.gate-input-wrap{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+/* Ambient Floating Gold Dust */
+.gold-dust{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+.dust{position:absolute;bottom:-12px;border-radius:50%;background:radial-gradient(circle,#fff4d4,var(--gold),transparent);opacity:0;animation:floatDust linear infinite}
+@keyframes floatDust{
+  0%{transform:translateY(0) scale(.6);opacity:0}
+  20%{opacity:.65}
+  80%{opacity:.45}
+  100%{transform:translateY(-105svh) scale(1.2);opacity:0}
+}
+
+/* VIP Wax-Seal Gate Overlay */
+.vip-gate{position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at 50% 30%,#4e1318 0%,#1d0507 65%,#0d0203 100%);display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .75s ease,transform .85s cubic-bezier(.22,1,.36,1),visibility .75s ease;perspective:1200px}
+.vip-gate.unlocking{opacity:0;transform:scale(1.08) rotateX(8deg);visibility:hidden;pointer-events:none}
+.gate-card{width:min(440px,100%);border:2px solid #b88c51;outline:1px solid #d8b47755;outline-offset:6px;background:linear-gradient(180deg,rgba(42,9,12,.96),rgba(20,4,5,.96));padding:36px 24px 32px;text-align:center;box-shadow:0 25px 70px #000d,inset 0 0 40px #d8b47714;position:relative}
+.wax-seal{width:76px;height:76px;margin:0 auto 14px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#b92b37,#6e1018 68%,#3d070c);border:2px solid #e5be7b;box-shadow:0 8px 22px #000a,inset 0 0 12px #ff9a9e44,0 0 24px #d8b47733;display:grid;place-items:center;position:relative;transition:transform .55s cubic-bezier(.34,1.56,.64,1),opacity .45s ease}
+.wax-seal:after{content:"";position:absolute;inset:5px;border-radius:50%;border:1px dashed #f3d69f88}
+.wax-seal span{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:700;color:var(--gold-bright);text-shadow:0 1px 4px #000}
+.vip-gate.unlocking .wax-seal{transform:scale(1.6) rotate(25deg);opacity:0}
+.gate-sub{font-family:"Cormorant Garamond",serif;font-size:12px;letter-spacing:.35em;color:#d9b77e;margin:0 0 8px}
+.gate-title{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:600;color:var(--gold-bright);margin:0 0 14px;letter-spacing:.05em}
+.gate-desc{font-size:13px;line-height:1.85;color:#ead4b0;margin:0 0 22px}
+.gate-input-wrap{display:flex;gap:8px;justify-content:center;margin-bottom:10px}
 .gate-input{width:170px;background:#140304;border:1px solid #b88c51;color:var(--gold-bright);font-family:"Cormorant Garamond",serif;font-size:24px;letter-spacing:.35em;text-align:center;padding:10px 12px;outline:none}
 .gate-input::placeholder{letter-spacing:.15em;font-size:14px;color:#8e6b40}
-.gate-input:focus{border-color:var(--gold-bright);box-shadow:0 0 15px #d8b47744}
-.gate-btn{background:linear-gradient(180deg,#5b191e,#360c10);border:1px solid var(--gold);color:var(--gold-bright);font-family:"Noto Serif KR",serif;font-size:13px;padding:10px 20px;cursor:pointer;transition:all .2s}
-.gate-btn:hover,.gate-btn:active{background:#732228}
+.gate-input:focus{border-color:var(--gold-bright);box-shadow:0 0 16px #d8b47755}
+.gate-btn{background:linear-gradient(180deg,#6b1c22,#380b0f);border:1px solid var(--gold);color:var(--gold-bright);font-family:"Noto Serif KR",serif;font-size:13px;padding:10px 20px;cursor:pointer;transition:all .2s}
+.gate-btn:hover,.gate-btn:active{background:linear-gradient(180deg,#82242b,#470e13);box-shadow:0 0 14px #d8b47744}
 .gate-error{min-height:20px;font-size:12px;color:#ff8f8f;margin:8px 0 0}
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 .shake{animation:shake .38s ease}
 
-/* Confetti Canvas & Floating Music Control */
+/* Confetti Canvas & Floating Controls */
 #fx-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9998}
-.music-ctrl{position:fixed;right:16px;bottom:16px;z-index:900;display:flex;align-items:center;gap:8px;background:rgba(36,9,11,.9);border:1px solid #b88c51;color:var(--gold-bright);padding:10px 14px;border-radius:999px;font-size:12px;cursor:pointer;box-shadow:0 6px 20px #0009;backdrop-filter:blur(6px)}
+.floating-bar{position:fixed;right:16px;bottom:16px;z-index:900;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.float-btn{display:flex;align-items:center;gap:8px;background:rgba(36,9,11,.92);border:1px solid #b88c51;color:var(--gold-bright);padding:10px 14px;border-radius:999px;font-size:12px;cursor:pointer;box-shadow:0 6px 20px #0009;backdrop-filter:blur(6px);font-family:"Noto Serif KR",serif;transition:transform .2s,border-color .2s}
+.float-btn:hover{transform:translateY(-2px);border-color:var(--gold-bright)}
 .music-ctrl.playing .eq{animation:pulse 1s infinite alternate}
 @keyframes pulse{from{opacity:.5;transform:scale(.92)}to{opacity:1;transform:scale(1.12)}}
 
-/* Hero */
+/* Hero Unfold Animation */
 .hero{min-height:100svh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;padding:64px 20px 56px;overflow:hidden}
 .hero:before,.hero:after{content:"";position:absolute;top:0;bottom:0;width:min(19vw,220px);opacity:.92;pointer-events:none}
 .hero:before{left:0;background:linear-gradient(90deg,#160304,#65151d 35%,#2b080c 72%,transparent);clip-path:polygon(0 0,100% 0,78% 12%,100% 28%,75% 48%,100% 68%,76% 86%,100% 100%,0 100%)}
 .hero:after{right:0;background:linear-gradient(270deg,#160304,#65151d 35%,#2b080c 72%,transparent);clip-path:polygon(0 0,100% 0,100% 100%,0 100%,24% 86%,0 68%,25% 48%,0 28%,22% 12%)}
-.hero-inner{position:relative;z-index:1;width:min(850px,100%);padding:24px 10px}
+.hero-inner{position:relative;z-index:1;width:min(850px,100%);padding:34px 18px;border:1px solid #d8b47733;background:linear-gradient(180deg,rgba(46,11,14,.35),rgba(20,4,5,.25));opacity:0;transform:scaleY(.88) translateY(24px);transition:opacity 1s ease .15s,transform 1s cubic-bezier(.22,1,.36,1) .15s}
+body.entered .hero-inner{opacity:1;transform:scaleY(1) translateY(0)}
 .crown{font-size:44px;color:var(--gold);text-shadow:0 0 20px #d9a65b;margin-bottom:10px}
 .crest{font-family:"Cormorant Garamond",serif;font-size:32px;font-style:italic;color:var(--gold);border:1px solid #a77b43;border-radius:50%;width:72px;height:72px;display:grid;place-items:center;margin:0 auto 22px;box-shadow:0 0 25px #d3a15a33}
 .eyebrow{font-size:11px;letter-spacing:.42em;color:#e5c58f;margin:0 0 16px}
@@ -68,11 +84,11 @@ h1 span{display:block}
 .count-label{font-size:10px;letter-spacing:.3em;color:#d9b77e;margin-top:26px}
 
 /* Quick Nav */
-.quick-nav{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:0 auto 28px;padding:0 12px}
-.quick-nav a{text-decoration:none;font-size:11px;letter-spacing:.12em;padding:8px 13px;border:1px solid #a77a4688;background:#280a0c;color:#e7c58d}
-.quick-nav a:hover{background:#4f161a;border-color:var(--gold)}
+.quick-nav{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:0 auto 20px;padding:0 12px}
+.quick-nav a,.quick-nav button{text-decoration:none;font-size:11px;letter-spacing:.12em;padding:8px 13px;border:1px solid #a77a4688;background:#280a0c;color:#e7c58d;cursor:pointer;font-family:"Noto Serif KR",serif}
+.quick-nav a:hover,.quick-nav button:hover{background:#4f161a;border-color:var(--gold)}
 
-main{max-width:900px;margin:auto;padding:0 18px 80px}
+main{max-width:900px;margin:auto;padding:0 18px 96px}
 .section{margin:34px auto 52px;scroll-margin-top:20px}
 .section-title{text-align:center;color:#e7c58d;font-family:"Cormorant Garamond",serif;font-size:25px;letter-spacing:.13em;margin:0 0 22px}
 .section-title span{display:inline-block;border:1px solid #a77a46;padding:7px 26px;background:#3b1112;box-shadow:0 4px 18px #0005}
@@ -103,40 +119,68 @@ main{max-width:900px;margin:auto;padding:0 18px 80px}
 .photo-fallback span{font-size:28px;margin-bottom:8px}
 .photo-fallback small{font-size:11px;color:#cfa86e;line-height:1.5}
 
-/* Lightbox */
-.lightbox{position:fixed;inset:0;z-index:9990;background:rgba(10,2,3,.92);display:none;align-items:center;justify-content:center;padding:20px}
-.lightbox.open{display:flex}
+/* Lightbox & Golden Pass Modal */
+.modal-backdrop{position:fixed;inset:0;z-index:9990;background:rgba(10,2,3,.9);display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-backdrop.open{display:flex}
 .lightbox img{max-width:92vw;max-height:80svh;border:2px solid var(--gold);box-shadow:0 15px 40px #000}
-.lightbox-close{position:absolute;top:18px;right:20px;background:#3b1112;border:1px solid var(--gold);color:var(--gold-bright);width:38px;height:38px;font-size:18px;cursor:pointer}
+.modal-close{position:absolute;top:18px;right:20px;background:#3b1112;border:1px solid var(--gold);color:var(--gold-bright);width:38px;height:38px;font-size:18px;cursor:pointer}
 
-/* 3-Step Secret Puzzle */
-.puzzle-box{border:1px solid #b88c51;background:rgba(34,8,10,.88);padding:26px 20px;box-shadow:0 12px 32px #0008}
-.puzzle-steps{display:flex;justify-content:center;gap:10px;margin-bottom:20px}
-.step-pill{padding:5px 14px;border:1px solid #8a6437;font-size:11px;letter-spacing:.15em;color:#b89462}
-.step-pill.active{border-color:var(--gold-bright);background:#4d1519;color:var(--gold-bright)}
-.step-pill.done{border-color:#78c28c;background:#1a3a24;color:#b7f0c5}
-.puzzle-q{text-align:center;font-size:15px;line-height:1.8;color:#f5e1be;margin:0 0 8px}
-.puzzle-hint{text-align:center;font-size:12px;color:#cfa96e;margin:0 0 18px}
-.puzzle-form{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
-.puzzle-input{width:min(240px,100%);background:#160405;border:1px solid #b88c51;color:var(--gold-bright);padding:11px 14px;font-family:"Noto Serif KR",serif;font-size:14px;text-align:center;outline:none}
-.puzzle-msg{text-align:center;font-size:12px;min-height:18px;margin-top:10px;color:#ff9c9c}
-.reward-ticket{display:none;margin-top:10px;padding:24px 18px;border:2px dashed #d8b477;background:radial-gradient(circle at top,#5c1a20,#2a080b);text-align:center}
+.pass-card{width:min(460px,100%);background:radial-gradient(circle at top,#fff6e0,#e5c68d);color:var(--ink);border:4px double #8a5e2f;outline:1px solid #f3d69f;outline-offset:-8px;padding:30px 24px;text-align:center;box-shadow:0 24px 60px #000d;position:relative}
+.pass-tag{font-size:11px;letter-spacing:.3em;color:#7a4e21;font-weight:700}
+.pass-title{font-family:"Cormorant Garamond",serif;font-size:32px;margin:8px 0 6px;color:#3d1115}
+.pass-divider{height:1px;background:linear-gradient(90deg,transparent,#8a5e2f,transparent);margin:14px 0}
+.pass-meta{font-size:13px;line-height:1.9;text-align:left;max-width:340px;margin:0 auto 18px}
+.pass-meta b{color:#5a191f}
+
+/* Grand Birthday Awards Quiz */
+.awards-box{border:1px solid #b88c51;background:rgba(34,8,10,.9);padding:28px 22px;box-shadow:0 14px 36px #0009}
+.awards-banner{text-align:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #a77a4644}
+.awards-sub{font-family:"Cormorant Garamond",serif;font-size:12px;letter-spacing:.28em;color:#d9b77e;margin:0 0 6px}
+.awards-heading{font-family:"Cormorant Garamond",serif;font-size:clamp(22px,4vw,30px);color:var(--gold-bright);margin:0 0 14px;letter-spacing:.04em}
+.award-pips{display:flex;justify-content:center;flex-wrap:wrap;gap:6px}
+.award-pip{width:34px;height:26px;display:grid;place-items:center;border:1px solid #8a6437;font-family:"Cormorant Garamond",serif;font-size:12px;color:#b89462;cursor:pointer;background:rgba(20,4,5,.6)}
+.award-pip.active{border-color:var(--gold-bright);background:#52161b;color:var(--gold-bright);font-weight:700}
+.award-pip.done{border-color:#d8b477;background:#3a270e;color:#ffe2a8}
+
+.award-card-head{text-align:center;margin-bottom:18px}
+.award-num-title{font-family:"Cormorant Garamond",serif;font-size:clamp(19px,3.5vw,25px);color:#f5d79e;margin:0 0 4px;letter-spacing:.05em}
+.award-category{font-size:11px;letter-spacing:.22em;color:#cfa96e;margin:0 0 14px}
+.award-question{font-size:clamp(15px,2.6vw,18px);font-weight:600;line-height:1.7;color:#fff0d4;margin:0}
+.nominees-label{text-align:center;font-size:11px;letter-spacing:.25em;color:#d8b477;margin:18px 0 12px}
+
+.nominees-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:680px;margin:0 auto 18px}
+.nominee-btn{display:flex;align-items:flex-start;gap:10px;text-align:left;width:100%;padding:12px 14px;background:#1b0507;border:1px solid #966d3e;color:#f3dfbd;font-family:"Noto Serif KR",serif;font-size:13px;line-height:1.55;cursor:pointer;transition:all .2s}
+.nominee-btn:hover{border-color:var(--gold-bright);background:#330c10}
+.nominee-btn.selected{border-color:var(--gold-bright);background:#57181e;color:#fff2d6;box-shadow:0 0 14px #d8b47733}
+.nominee-idx{font-family:"Cormorant Garamond",serif;font-weight:700;color:var(--gold);font-size:15px;flex-shrink:0}
+
+.award-controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.award-feedback{text-align:center;font-size:13px;min-height:22px;margin-top:12px;color:#ff9c9c}
+
+.verdict-box{display:none;max-width:640px;margin:18px auto 0;padding:18px 16px;border:1px solid var(--gold);background:radial-gradient(circle at top,#5c1b21,#29080b);text-align:center}
+.verdict-box.show{display:block;animation:fadeIn .45s ease}
+.verdict-tag{display:inline-block;padding:3px 12px;border:1px solid var(--gold);font-size:11px;letter-spacing:.22em;color:var(--gold-bright);margin-bottom:8px}
+.verdict-winner{font-size:17px;font-weight:700;color:#ffe5ad;margin:4px 0 14px}
+
+.reward-ticket{display:none;margin-top:14px;padding:26px 20px;border:2px dashed #d8b477;background:radial-gradient(circle at top,#5c1a20,#2a080b);text-align:center}
 .reward-ticket.unlocked{display:block;animation:fadeIn .6s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .reward-badge{display:inline-block;padding:4px 14px;border:1px solid var(--gold);font-size:11px;letter-spacing:.25em;color:var(--gold-bright);margin-bottom:10px}
 .reward-title{font-family:"Cormorant Garamond",serif;font-size:26px;color:#ffe2a8;margin:4px 0 10px}
 .reward-text{font-size:13px;line-height:1.85;color:#f4dfbd;margin:0}
 
-/* Guestbook / Celebration Messages */
-.msg-form{display:grid;gap:10px;margin-bottom:18px}
+/* Guestbook */
+.msg-form{display:grid;gap:10px;margin-bottom:22px}
 .msg-row{display:grid;grid-template-columns:140px 1fr;gap:10px}
 .msg-input,.msg-textarea{width:100%;background:#fffaf0;border:1px solid #a77a46;color:var(--ink);font-family:"Noto Serif KR",serif;font-size:13px;padding:10px 12px;outline:none}
 .msg-textarea{min-height:76px;resize:vertical}
 .msg-submit{justify-self:end;background:#3b1112;border:1px solid #8a5e2f;color:#f4d9a6;padding:10px 22px;font-family:"Noto Serif KR",serif;font-size:13px;cursor:pointer}
 .msg-submit:hover{background:#5c1b1d}
-.msg-list{display:grid;gap:10px;max-height:360px;overflow-y:auto;padding-right:4px}
+.msg-submit:disabled{opacity:.6;cursor:not-allowed}
+.msg-status{font-size:12px;color:#7a4e21;min-height:18px;margin-bottom:8px}
+.msg-list{display:grid;gap:10px;max-height:340px;overflow-y:auto;padding-right:4px}
 .msg-item{background:rgba(255,250,238,.72);border-left:3px solid #8a5e2f;padding:11px 14px}
-.msg-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:4px;color:#6c4520}
+.msg-head{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;margin-bottom:4px;color:#6c4520}
 .msg-body{font-size:13px;line-height:1.65;color:var(--ink);margin:0;word-break:break-word}
 
 /* Notice & Footer */
@@ -145,7 +189,7 @@ main{max-width:900px;margin:auto;padding:0 18px 80px}
 .footer{text-align:center;padding:38px 15px 25px;color:#d9b77e;font-size:13px;line-height:2}
 .footer .big{font-family:"Cormorant Garamond",serif;font-size:22px;letter-spacing:.08em;color:#edce98}
 .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:22px}
-.btn{display:inline-block;text-decoration:none;border:1px solid #c69a5e;color:#f2d7a7;padding:11px 18px;font-size:12px;letter-spacing:.04em;background:#3b1112;cursor:pointer}
+.btn{display:inline-block;text-decoration:none;border:1px solid #c69a5e;color:#f2d7a7;padding:11px 18px;font-size:12px;letter-spacing:.04em;background:#3b1112;cursor:pointer;font-family:"Noto Serif KR",serif}
 .btn:hover{background:#6b2525}
 
 /* Mobile Optimization */
@@ -162,27 +206,32 @@ main{max-width:900px;margin:auto;padding:0 18px 80px}
   .section{margin:28px auto 40px}
   .section-title{font-size:21px}
   .gallery-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .nominees-grid{grid-template-columns:1fr}
   .msg-row{grid-template-columns:1fr}
   .msg-submit{width:100%}
-  .gate-card{padding:30px 18px}
+  .gate-card{padding:28px 18px}
   .gate-input-wrap{flex-direction:column;align-items:center}
   .gate-input,.gate-btn{width:100%;max-width:240px}
-  .music-ctrl{right:12px;bottom:12px;padding:9px 12px;font-size:11px}
+  .floating-bar{right:12px;bottom:12px}
+  .float-btn{padding:9px 12px;font-size:11px}
 }
 </style>
 </head>
 <body class="locked">
 
-<!-- VIP Password Gate -->
+<!-- Ambient Gold Dust -->
+<div class="gold-dust" id="goldDust" aria-hidden="true"></div>
+
+<!-- VIP Wax-Seal Gate Overlay -->
 <div class="vip-gate" id="vipGate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
   <div class="gate-card" id="gateCard">
-    <div class="gate-crown">♛</div>
-    <p class="gate-sub">PRIVATE VIP ACCESS</p>
+    <div class="wax-seal" aria-hidden="true"><span>B</span></div>
+    <p class="gate-sub">PRIVATE VIP ACCESS · SEALED INVITATION</p>
     <h2 class="gate-title" id="gateTitle">ROYAL INVITATION</h2>
-    <p class="gate-desc">본 연회장은 초청된 귀빈만 입장 가능합니다.<br>VIP 초대 코드 4자리를 입력해 주세요.</p>
+    <p class="gate-desc">봉인된 초청장입니다.<br>VIP 초대 코드 4자리를 입력해 실링을 해제해 주세요.</p>
     <form class="gate-input-wrap" id="gateForm">
       <input class="gate-input" id="vipCode" type="password" inputmode="numeric" maxlength="4" placeholder="CODE" autocomplete="off" required>
-      <button class="gate-btn" type="submit">입장하기</button>
+      <button class="gate-btn" type="submit">봉인 해제</button>
     </form>
     <p class="gate-error" id="gateError"></p>
   </div>
@@ -191,11 +240,14 @@ main{max-width:900px;margin:auto;padding:0 18px 80px}
 <!-- Fireworks & Confetti Canvas -->
 <canvas id="fx-canvas"></canvas>
 
-<!-- Background Audio -->
+<!-- Background Audio & Toast Sparkle Controls -->
 <audio id="bgm" src="birthday.mp3" loop preload="auto"></audio>
-<button class="music-ctrl" id="musicToggle" type="button" aria-label="배경음악 재생 및 일시정지">
-  <span class="eq">♪</span> <span id="musicLabel">BGM OFF</span>
-</button>
+<div class="floating-bar">
+  <button class="float-btn" id="toastBtn" type="button" aria-label="축하 스파클 터뜨리기">🥂 <span>CHEERS</span></button>
+  <button class="float-btn music-ctrl" id="musicToggle" type="button" aria-label="배경음악 재생 및 일시정지">
+    <span class="eq">♪</span> <span id="musicLabel">BGM OFF</span>
+  </button>
+</div>
 
 <header class="hero">
   <div class="hero-inner">
@@ -217,8 +269,9 @@ main{max-width:900px;margin:auto;padding:0 18px 80px}
       <a href="#details">DETAILS</a>
       <a href="#program">PROGRAM</a>
       <a href="#gallery">GALLERY</a>
-      <a href="#puzzle">SECRET PUZZLE</a>
+      <a href="#awards">BIRTHDAY AWARDS</a>
       <a href="#guestbook">GUESTBOOK</a>
+      <button type="button" id="openPassBtn">VIP PASS ✦</button>
     </nav>
   </div>
 </header>
@@ -276,34 +329,49 @@ main{max-width:900px;margin:auto;padding:0 18px 80px}
     </div>
   </section>
 
-  <!-- 3-Step Secret Puzzle -->
-  <section class="section" id="puzzle">
-    <h2 class="section-title"><span>SECRET PUZZLE</span></h2>
-    <div class="puzzle-box">
-      <div class="puzzle-steps">
-        <span class="step-pill active" id="pill0">STEP 1</span>
-        <span class="step-pill" id="pill1">STEP 2</span>
-        <span class="step-pill" id="pill2">STEP 3</span>
+  <!-- The Grand Birthday Awards Quiz -->
+  <section class="section" id="awards">
+    <h2 class="section-title"><span>THE GRAND BIRTHDAY AWARDS</span></h2>
+    <div class="awards-box">
+      <div class="awards-banner">
+        <p class="awards-sub">BAE ARYEONG · THE OFFICIAL QUESTION ARCHIVE</p>
+        <h3 class="awards-heading">OFFICIAL AWARDS ARCHIVE (01 – 08)</h3>
+        <div class="award-pips" id="awardPips"></div>
       </div>
 
-      <div id="puzzleActiveArea">
-        <p class="puzzle-q" id="puzzleQuestion"></p>
-        <p class="puzzle-hint" id="puzzleHint"></p>
-        <form class="puzzle-form" id="puzzleForm">
-          <input class="puzzle-input" id="puzzleAnswer" type="text" placeholder="정답을 입력하세요" autocomplete="off" required>
-          <button class="btn" type="submit">봉인 해제</button>
-        </form>
-        <p class="puzzle-msg" id="puzzleMsg"></p>
+      <div id="awardQuizArea">
+        <div class="award-card-head">
+          <h4 class="award-num-title" id="awardNumTitle"></h4>
+          <p class="award-category" id="awardCategory"></p>
+          <p class="award-question" id="awardQuestion"></p>
+        </div>
+
+        <div class="nominees-label">NOMINEES</div>
+        <div class="nominees-grid" id="nomineesGrid"></div>
+
+        <div class="award-controls">
+          <button class="btn" type="button" id="checkAwardBtn">정답 확인</button>
+        </div>
+        <p class="award-feedback" id="awardFeedback"></p>
+
+        <div class="verdict-box" id="verdictBox">
+          <div class="verdict-tag" id="verdictTag">WINNER</div>
+          <p class="verdict-winner" id="verdictWinner"></p>
+          <button class="btn" type="button" id="nextAwardBtn">다음 문항으로 →</button>
+        </div>
       </div>
 
-      <div class="reward-ticket" id="rewardTicket">
-        <div class="reward-badge">✦ ALL SECRETS UNLOCKED ✦</div>
-        <h3 class="reward-title">GOLDEN VIP PASS : FIRST TOAST</h3>
+      <div class="reward-ticket" id="awardsCompleteBox">
+        <div class="reward-badge">✦ ARCHIVE COMPLETE · ALL 8 AWARDS REVEALED ✦</div>
+        <h3 class="reward-title">GOLDEN VIP PASS : GRAND LAUREATE</h3>
         <p class="reward-text">
-          축하합니다! 3단계 비밀 퍼즐을 모두 해결하셨습니다.<br>
-          본 화면을 연회 당일 호스트에게 제시하시면<br>
-          <b>[스페셜 건배사 우선권 & 시크릿 기프트]</b> 혜택을 드립니다.
+          축하합니다! THE GRAND BIRTHDAY AWARDS 8개 문항을 모두 완료하셨습니다.<br>
+          연회 당일 배아령의 공식 수상 기록과 함께<br>
+          <b>[스페셜 건배사]</b> 찬스를 드립니다.
         </p>
+        <div class="actions">
+          <button class="btn" type="button" id="restartAwardsBtn">아카이브 처음부터 다시 보기</button>
+        </div>
       </div>
     </div>
   </section>
@@ -317,8 +385,9 @@ main{max-width:900px;margin:auto;padding:0 18px 80px}
           <input class="msg-input" id="guestName" type="text" maxlength="20" placeholder="성함 / 닉네임" required>
           <textarea class="msg-textarea" id="guestText" maxlength="200" placeholder="아령이의 생일을 축하하는 따뜻한 메시지를 남겨주세요!" required></textarea>
         </div>
-        <button class="msg-submit" type="submit">축하 메시지 남기기 ✦</button>
+        <button class="msg-submit" type="submit" id="guestSubmitBtn">축하 메시지 남기기 ✦</button>
       </form>
+      <div class="msg-status" id="msgStatus"></div>
       <div class="msg-list" id="msgList"></div>
     </div>
   </section>
@@ -348,12 +417,46 @@ main{max-width:900px;margin:auto;padding:0 18px 80px}
 </main>
 
 <!-- Image Lightbox -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
-  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="닫기">✕</button>
+<div class="modal-backdrop lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="사진 확대 보기">
+  <button class="modal-close" id="lightboxClose" type="button" aria-label="닫기">✕</button>
   <img id="lightboxImg" src="" alt="확대 사진">
 </div>
 
+<!-- VIP Pass Modal -->
+<div class="modal-backdrop" id="passModal" role="dialog" aria-modal="true" aria-labelledby="passModalTitle">
+  <div class="pass-card">
+    <button class="modal-close" id="passClose" type="button" aria-label="닫기">✕</button>
+    <div class="pass-tag">OFFICIAL ROYAL SUMMONS</div>
+    <h3 class="pass-title" id="passModalTitle">VIP GOLDEN PASS</h3>
+    <div class="pass-divider"></div>
+    <div class="pass-meta">
+      <div><b>HONOREE</b> : 배아령 (BAE ARYEONG)</div>
+      <div><b>DATE</b> : 2026. 11. 29 (SUN) 12:00 – 16:00</div>
+      <div><b>VENUE</b> : 당산 프레누아 (영등포구 당산로 180, 2F)</div>
+      <div><b>DRESS CODE</b> : BLACK &amp; WHITE</div>
+      <div><b>STATUS</b> : ADMITTED GUEST ✦</div>
+    </div>
+    <button class="btn" type="button" id="passCheersBtn">건배 스파클 터뜨리기 🥂</button>
+  </div>
+</div>
+
 <script>
+/* 0. Ambient Gold Dust */
+(function initDust(){
+  const wrap = document.getElementById("goldDust");
+  for(let i = 0; i < 22; i++){
+    const d = document.createElement("span");
+    d.className = "dust";
+    const size = 2 + Math.random() * 4;
+    d.style.width = size + "px";
+    d.style.height = size + "px";
+    d.style.left = (Math.random() * 100) + "%";
+    d.style.animationDuration = (8 + Math.random() * 10) + "s";
+    d.style.animationDelay = (-Math.random() * 12) + "s";
+    wrap.appendChild(d);
+  }
+})();
+
 /* 1. VIP Gate & Audio & Confetti/Fireworks */
 const VIP_PASS = "4838";
 const vipGate = document.getElementById("vipGate");
@@ -364,6 +467,7 @@ const gateError = document.getElementById("gateError");
 const bgm = document.getElementById("bgm");
 const musicToggle = document.getElementById("musicToggle");
 const musicLabel = document.getElementById("musicLabel");
+const pad = n => String(n).padStart(2, "0");
 
 function playBgm(){
   bgm.volume = 0.75;
@@ -401,14 +505,17 @@ resizeCanvas();
 
 const FX_COLORS = ["#f3d69f", "#d8b477", "#fff4d4", "#e05353", "#ff9e7d", "#ffffff"];
 
-function launchCelebration(){
+function launchCelebration(originX, originY){
   const w = canvas.width;
   const h = canvas.height;
-  for(let i = 0; i < 120; i++){
+  const cx = typeof originX === "number" ? originX : w * 0.5;
+  const cy = typeof originY === "number" ? originY : h * 0.26;
+
+  for(let i = 0; i < 110; i++){
     particles.push({
       type: "confetti",
       x: Math.random() * w,
-      y: -20 - Math.random() * h * 0.4,
+      y: -20 - Math.random() * h * 0.35,
       vx: (Math.random() - 0.5) * 4,
       vy: 2 + Math.random() * 4.5,
       size: 6 + Math.random() * 6,
@@ -416,14 +523,15 @@ function launchCelebration(){
       vRot: (Math.random() - 0.5) * 10,
       color: FX_COLORS[Math.floor(Math.random() * FX_COLORS.length)],
       alpha: 1,
-      decay: 0.004 + Math.random() * 0.004
+      decay: 0.0045 + Math.random() * 0.004
     });
   }
-  const bursts = [[w * 0.25, h * 0.3], [w * 0.75, h * 0.28], [w * 0.5, h * 0.22]];
+
+  const bursts = [[cx, cy], [w * 0.25, h * 0.3], [w * 0.75, h * 0.28]];
   bursts.forEach(([bx, by], idx) => {
     setTimeout(() => {
-      for(let i = 0; i < 65; i++){
-        const angle = (Math.PI * 2 * i) / 65 + Math.random() * 0.1;
+      for(let i = 0; i < 60; i++){
+        const angle = (Math.PI * 2 * i) / 60 + Math.random() * 0.1;
         const speed = 2 + Math.random() * 6;
         particles.push({
           type: "spark",
@@ -438,7 +546,7 @@ function launchCelebration(){
         });
       }
       startFxLoop();
-    }, idx * 280);
+    }, idx * 240);
   });
   startFxLoop();
 }
@@ -486,13 +594,20 @@ function startFxLoop(){
   requestAnimationFrame(step);
 }
 
+document.getElementById("toastBtn").addEventListener("click", e => {
+  launchCelebration(e.clientX, e.clientY);
+});
+
 gateForm.addEventListener("submit", e => {
   e.preventDefault();
   if(vipCode.value.trim() === VIP_PASS){
-    vipGate.classList.add("hidden");
-    document.body.classList.remove("locked");
-    playBgm();
-    launchCelebration();
+    vipGate.classList.add("unlocking");
+    setTimeout(() => {
+      document.body.classList.remove("locked");
+      document.body.classList.add("entered");
+      playBgm();
+      launchCelebration();
+    }, 220);
   } else {
     gateError.textContent = "초대 코드가 일치하지 않습니다. 다시 확인해 주세요.";
     gateCard.classList.remove("shake");
@@ -505,7 +620,6 @@ gateForm.addEventListener("submit", e => {
 
 /* 2. Countdown */
 const target = new Date("2026-11-29T12:00:00+09:00").getTime();
-const pad = n => String(n).padStart(2, "0");
 function updateCountdown(){
   let diff = target - Date.now();
   if(diff <= 0){
@@ -524,7 +638,7 @@ function updateCountdown(){
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-/* 3. Photo Gallery Fallback & Lightbox */
+/* 3. Photo Gallery Fallback & Lightbox & VIP Pass Modal */
 function handleImgError(img, label){
   const card = img.parentElement;
   card.dataset.missing = "1";
@@ -541,191 +655,350 @@ document.getElementById("galleryGrid").addEventListener("click", e => {
 document.getElementById("lightboxClose").addEventListener("click", () => lightbox.classList.remove("open"));
 lightbox.addEventListener("click", e => { if(e.target === lightbox) lightbox.classList.remove("open"); });
 
-/* 4. 3-Step Secret Puzzle */
-const PUZZLES = [
-  {
-    q: "Q1. 본 갈라 파티의 드레스 코드는 무엇일까요?",
-    hint: "힌트: 두 가지 무채색의 조화 (영문 또는 한글)",
-    answers: ["blackandwhite", "black&white", "블랙앤화이트", "블랙화이트"]
-  },
-  {
-    q: "Q2. 11월 29일 연회가 열리는 당산 파티룸의 이름은?",
-    hint: "힌트: 초대장 VENUE 항목의 세 글자",
-    answers: ["프레누아", "prenoir"]
-  },
-  {
-    q: "Q3. 오늘 밤 가장 빛나는 주인공의 이름은 무엇일까요?",
-    hint: "힌트: BAE ARYEONG",
-    answers: ["배아령", "아령"]
-  }
-];
-
-let currentStep = Number(localStorage.getItem("gala_puzzle_step") || 0);
-const puzzleQuestion = document.getElementById("puzzleQuestion");
-const puzzleHint = document.getElementById("puzzleHint");
-const puzzleAnswer = document.getElementById("puzzleAnswer");
-const puzzleMsg = document.getElementById("puzzleMsg");
-const puzzleActiveArea = document.getElementById("puzzleActiveArea");
-const rewardTicket = document.getElementById("rewardTicket");
-
-function renderPuzzle(){
-  for(let i = 0; i < 3; i++){
-    const pill = document.getElementById("pill" + i);
-    pill.className = "step-pill";
-    if(i < currentStep) pill.classList.add("done");
-    else if(i === currentStep) pill.classList.add("active");
-  }
-  if(currentStep >= PUZZLES.length){
-    puzzleActiveArea.style.display = "none";
-    rewardTicket.classList.add("unlocked");
-  } else {
-    puzzleQuestion.textContent = PUZZLES[currentStep].q;
-    puzzleHint.textContent = PUZZLES[currentStep].hint;
-    puzzleAnswer.value = "";
-  }
-}
-
-document.getElementById("puzzleForm").addEventListener("submit", e => {
-  e.preventDefault();
-  const norm = puzzleAnswer.value.toLowerCase().replace(/\s+/g, "");
-  if(PUZZLES[currentStep].answers.includes(norm)){
-    puzzleMsg.textContent = "";
-    currentStep++;
-    localStorage.setItem("gala_puzzle_step", String(currentStep));
-    renderPuzzle();
-    if(currentStep >= PUZZLES.length) launchCelebration();
-  } else {
-    puzzleMsg.textContent = "아쉽습니다! 초대장의 힌트를 다시 살펴보세요.";
-  }
+const passModal = document.getElementById("passModal");
+document.getElementById("openPassBtn").addEventListener("click", () => passModal.classList.add("open"));
+document.getElementById("passClose").addEventListener("click", () => passModal.classList.remove("open"));
+passModal.addEventListener("click", e => { if(e.target === passModal) passModal.classList.remove("open"); });
+document.getElementById("passCheersBtn").addEventListener("click", e => {
+  passModal.classList.remove("open");
+  launchCelebration(e.clientX, e.clientY);
 });
-renderPuzzle();
-</script>
 
-<!-- 5. Firebase Guestbook + Admin Delete -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, push, remove, onValue, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "여기에_본인_API_KEY",
-  authDomain: "여기에_본인_PROJECT_ID.firebaseapp.com",
-  databaseURL: "여기에_본인_DATABASE_URL",
-  projectId: "여기에_본인_PROJECT_ID",
-  storageBucket: "여기에_본인_PROJECT_ID.appspot.com",
-  messagingSenderId: "여기에_SENDER_ID",
-  appId: "여기에_APP_ID"
-};
-
-const ADMIN_PASS = "4838";
-let isAdmin = false;
-let latestItems = [];
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const messagesRef = query(ref(db, "gala_messages"), limitToLast(100));
-
-const DEFAULT_MESSAGES = [
-  { id: null, name: "GALA COMMITTEE", text: "아령이의 찬란한 생일을 진심으로 축하합니다! 오늘 가장 빛나는 주인공이 되길.", date: "2026.11.29" }
+/* 4. The Grand Birthday Awards (8 Questions) */
+const AWARDS_DATA = [
+  {
+    num: "1",
+    title: "THE DAY OF BIRTH",
+    category: "THE SPECIAL DAY · OFFICIAL RECORD",
+    question: "배아령의 생일은?",
+    nominees: ["11월 27일", "11월 28일", "11월 29일", "11월 30일"],
+    answerIndex: 2,
+    verdictLabel: "WINNER",
+    verdictText: "11월 29일"
+  },
+  {
+    num: "02",
+    title: "THE NEXT LIFE AWARD",
+    category: "REINCARNATION · ANIMAL EDITION",
+    question: "배아령이 다음 생에 동물로 다시 태어난다면, 다시태어나고 싶은 동물은?",
+    nominees: ["고양이", "코알라", "코끼리", "판다"],
+    answerIndex: 2,
+    verdictLabel: "WINNER",
+    verdictText: "코끼리"
+  },
+  {
+    num: "03",
+    title: "THE INVISIBLE MISSION",
+    category: "TOP SECRET · UNAUTHORIZED ACCESS",
+    question: "배아령이 하루 동안 투명인간이 된다면, 가장 먼저 실행할 작전은?",
+    nominees: [
+      "금고털이 — 흔적도 증거도 남기지 않는 완벽한 범행",
+      "바나나 투척 — 김은희 방 앞에 의문의 바나나 배치",
+      "무임승차 — 비행기에 몰래 탑승해 일본으로 출국",
+      "비밀 잠입 — 평소 궁금했던 장소에 제한 없이 침투"
+    ],
+    answerIndex: 0,
+    verdictLabel: "WINNER",
+    verdictText: "금고털이"
+  },
+  {
+    num: "04",
+    title: "THE SURVIVAL CHALLENGE",
+    category: "EXTREME SURVIVAL · FINAL DESTINATION",
+    question: "배아령이 무인도에 홀로 남겨진다면, 예상 생존 기간은?",
+    nominees: [
+      "24시간 — 첫날부터 구조 요청",
+      "3일 — 식량 확보 실패로 위기 봉착",
+      "일주일 — 의외의 생존 본능 발휘",
+      "한 달 — 문명과 단절된 장기 생존"
+    ],
+    answerIndex: 3,
+    verdictLabel: "FINAL VERDICT",
+    verdictText: "한 달 안에 사망"
+  },
+  {
+    num: "05",
+    title: "THE ROYAL POLITICAL AWARD",
+    category: "THE CROWN · THE REBELLION",
+    question: "배아령이 어느 날 한 나라의 왕으로 즉위한다면, 가장 먼저 마주할 상황은?",
+    nominees: [
+      "태평성대 — 백성들의 전폭적인 지지와 환호",
+      "권력 투쟁 — 왕좌를 노리는 귀족들의 견제",
+      "국가 재정난 — 왕실 예산을 둘러싼 긴급 회의",
+      "반란의 조짐 — 곳곳에서 세력을 키우는 반란군"
+    ],
+    answerIndex: 3,
+    verdictLabel: "WINNER",
+    verdictText: "반란의 조짐"
+  },
+  {
+    num: "06",
+    title: "THE MOST NOTORIOUS OFFENSE",
+    category: "CRIMINAL RECORD · SPECIAL EDITION",
+    question: "배아령이 만약 감옥에 수감된다면, 가장 유력한 죄목은?",
+    nominees: [
+      "공공질서 문란 및 소란 행위",
+      "부녀자 희롱 및 풍기문란 혐의",
+      "상습적 무단침입 및 사생활 침해",
+      "사회적 물의 유발 및 품위 손상"
+    ],
+    answerIndex: 1,
+    verdictLabel: "FINAL VERDICT",
+    verdictText: "부녀자 희롱"
+  },
+  {
+    num: "07",
+    title: "THE CAT'S CONFESSION",
+    category: "EXCLUSIVE REVELATION · CLASSIFIED SECRET",
+    question: "배아령의 반려묘가 집사의 비밀을 세상에 폭로한다면, 가장 먼저 공개할 충격적인 진실은?",
+    nominees: [
+      "수면 과다 — 하루 대부분을 수면으로 보내는 생활 습관",
+      "구강 테러 — 기상 직후 검증되지 않은 구강 상태로 접근하는 행위",
+      "무차별 사진 촬영 — 고양이의 초상권은 무시한 채 하루에도 수십 번 카메라 들이미는 행위",
+      "과도한 애정 표현 — 고양이의 의사와 무관하게 쏟아지는 스킨십"
+    ],
+    answerIndex: 1,
+    verdictLabel: "WINNER",
+    verdictText: "구강 테러"
+  },
+  {
+    num: "08",
+    title: "THE FLORAL IDENTITY CRISIS",
+    category: "BOTANICAL REBRANDING · OFFICIAL NOMINATION",
+    question: "세상의 모든 꽃 이름을 자유롭게 바꿀 수 있다면, 배아령이 가장 먼저 이름을 바꾸고 싶은 꽃은?",
+    nominees: ["장미", "튤립", "팬지", "안개꽃"],
+    answerIndex: 2,
+    verdictLabel: "WINNER",
+    verdictText: "팬지"
+  }
 ];
+
+let awardIndex = 0;
+let selectedNominee = null;
+let revealedAwards = new Set();
+
+const awardPipsEl = document.getElementById("awardPips");
+const awardQuizArea = document.getElementById("awardQuizArea");
+const awardNumTitle = document.getElementById("awardNumTitle");
+const awardCategory = document.getElementById("awardCategory");
+const awardQuestion = document.getElementById("awardQuestion");
+const nomineesGrid = document.getElementById("nomineesGrid");
+const checkAwardBtn = document.getElementById("checkAwardBtn");
+const awardFeedback = document.getElementById("awardFeedback");
+const verdictBox = document.getElementById("verdictBox");
+const verdictTag = document.getElementById("verdictTag");
+const verdictWinner = document.getElementById("verdictWinner");
+const nextAwardBtn = document.getElementById("nextAwardBtn");
+const awardsCompleteBox = document.getElementById("awardsCompleteBox");
 
 function escapeHtml(str){
   return String(str).replace(/[&<>"']/g, s => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[s]));
 }
 
-function ensureAdminBar(){
-  const list = document.getElementById("msgList");
-  if(!list || document.getElementById("adminBar")) return;
-  const bar = document.createElement("div");
-  bar.id = "adminBar";
-  bar.style.cssText = "display:flex;justify-content:flex-end;margin-bottom:10px;";
-  bar.innerHTML = `<button type="button" id="adminBtn" style="background:transparent;border:1px solid #8a5e2f;color:#6c4520;font-size:11px;padding:4px 10px;cursor:pointer;">관리자 모드</button>`;
-  list.parentElement.insertBefore(bar, list);
-
-  document.getElementById("adminBtn").addEventListener("click", () => {
-    if(isAdmin){
-      isAdmin = false;
-      document.getElementById("adminBtn").textContent = "관리자 모드";
-      renderList(latestItems);
-      return;
-    }
-    const pw = prompt("관리자 비밀번호를 입력하세요.");
-    if(pw === ADMIN_PASS){
-      isAdmin = true;
-      document.getElementById("adminBtn").textContent = "관리자 모드 종료";
-      renderList(latestItems);
-    } else if(pw !== null){
-      alert("비밀번호가 일치하지 않습니다.");
-    }
-  });
+function renderAwardPips(){
+  awardPipsEl.innerHTML = AWARDS_DATA.map((item, idx) => {
+    const cls = ["award-pip"];
+    if(idx === awardIndex) cls.push("active");
+    if(revealedAwards.has(idx)) cls.push("done");
+    return `<button type="button" class="${cls.join(" ")}" data-idx="${idx}">${pad(idx + 1)}</button>`;
+  }).join("");
 }
 
-function renderList(items){
-  ensureAdminBar();
-  const list = document.getElementById("msgList");
-  if(!list) return;
-  const rows = items.length ? items : DEFAULT_MESSAGES;
-  list.innerHTML = rows.map(m => `
-    <div class="msg-item">
-      <div class="msg-head">
-        <b>${escapeHtml(m.name)}</b>
-        <span style="display:flex;align-items:center;gap:8px;">
-          <span>${escapeHtml(m.date)}</span>
-          ${isAdmin && m.id ? `<button type="button" data-del-id="${escapeHtml(m.id)}" style="background:#5c1b1d;color:#fff;border:none;padding:2px 7px;font-size:11px;cursor:pointer;">삭제</button>` : ""}
-        </span>
-      </div>
-      <p class="msg-body">${escapeHtml(m.text)}</p>
-    </div>
-  `).join("");
-}
-
-document.getElementById("msgList")?.addEventListener("click", async e => {
-  const btn = e.target.closest("[data-del-id]");
-  if(!btn || !isAdmin) return;
-  const id = btn.getAttribute("data-del-id");
-  if(!id) return;
-  if(!confirm("이 축하 메시지를 삭제할까요?")) return;
-  try{
-    await remove(ref(db, `gala_messages/${id}`));
-  } catch(err){
-    alert("삭제 중 오류가 발생했습니다.");
-  }
-});
-
-onValue(messagesRef, snapshot => {
-  const val = snapshot.val();
-  if(!val){
-    latestItems = [];
-    renderList(DEFAULT_MESSAGES);
+function renderAwardQuestion(){
+  renderAwardPips();
+  if(revealedAwards.size === AWARDS_DATA.length && awardIndex >= AWARDS_DATA.length){
+    awardQuizArea.style.display = "none";
+    awardsCompleteBox.classList.add("unlocked");
     return;
   }
-  latestItems = Object.entries(val)
-    .map(([id, data]) => ({ id, ...data }))
-    .reverse();
-  renderList(latestItems);
+  awardQuizArea.style.display = "block";
+  awardsCompleteBox.classList.remove("unlocked");
+
+  const item = AWARDS_DATA[awardIndex];
+  selectedNominee = null;
+  awardFeedback.textContent = "";
+  verdictBox.classList.remove("show");
+
+  awardNumTitle.textContent = `${item.num}. ${item.title}`;
+  awardCategory.textContent = item.category;
+  awardQuestion.textContent = item.question;
+
+  nomineesGrid.innerHTML = item.nominees.map((nom, idx) => `
+    <button type="button" class="nominee-btn" data-choice="${idx}">
+      <span class="nominee-idx">${idx + 1}.</span>
+      <span>${escapeHtml(nom)}</span>
+    </button>
+  `).join("");
+
+  nextAwardBtn.textContent = awardIndex === AWARDS_DATA.length - 1 ? "최종 트로피 확인하기 ✦" : "다음 문항으로 →";
+}
+
+awardPipsEl.addEventListener("click", e => {
+  const pip = e.target.closest(".award-pip");
+  if(!pip) return;
+  awardIndex = Number(pip.dataset.idx);
+  renderAwardQuestion();
 });
 
-const guestbookForm = document.getElementById("guestbookForm");
-if(guestbookForm){
-  guestbookForm.addEventListener("submit", async e => {
-    e.preventDefault();
-    const nameEl = document.getElementById("guestName");
-    const textEl = document.getElementById("guestText");
-    const name = nameEl.value.trim();
-    const text = textEl.value.trim();
-    if(!name || !text) return;
+nomineesGrid.addEventListener("click", e => {
+  const btn = e.target.closest(".nominee-btn");
+  if(!btn) return;
+  selectedNominee = Number(btn.dataset.choice);
+  nomineesGrid.querySelectorAll(".nominee-btn").forEach((el, idx) => {
+    el.classList.toggle("selected", idx === selectedNominee);
+  });
+  awardFeedback.textContent = "";
+});
 
-    const now = new Date();
-    const pad = n => String(n).padStart(2, "0");
-    const dateStr = `${now.getFullYear()}.${pad(now.getMonth() + 1)}.${pad(now.getDate())}`;
+checkAwardBtn.addEventListener("click", () => {
+  const item = AWARDS_DATA[awardIndex];
+  if(selectedNominee === null){
+    awardFeedback.textContent = "후보 중 하나를 먼저 선택해 주세요.";
+    return;
+  }
+  if(selectedNominee === item.answerIndex){
+    awardFeedback.style.color = "#ffe2a8";
+    awardFeedback.textContent = "정답입니다! 공식 수상 기록이 봉인 해제되었습니다.";
+    revealedAwards.add(awardIndex);
+    verdictTag.textContent = item.verdictLabel;
+    verdictWinner.textContent = item.verdictText;
+    verdictBox.classList.add("show");
+    renderAwardPips();
+  } else {
+    awardFeedback.style.color = "#ff9c9c";
+    awardFeedback.textContent = "아쉽습니다! 다른 후보를 선택해 다시 도전해 보세요.";
+  }
+});
+
+nextAwardBtn.addEventListener("click", () => {
+  if(awardIndex < AWARDS_DATA.length - 1){
+    awardIndex++;
+    renderAwardQuestion();
+  } else {
+    awardIndex = AWARDS_DATA.length;
+    renderAwardQuestion();
+    launchCelebration();
+  }
+});
+
+document.getElementById("restartAwardsBtn").addEventListener("click", () => {
+  awardIndex = 0;
+  revealedAwards.clear();
+  renderAwardQuestion();
+});
+
+renderAwardQuestion();
+</script>
+
+<!-- 5. Firebase Firestore Guestbook (다른 기기/폰과 실시간 동기화) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    query,
+    orderBy,
+    onSnapshot,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAPbksC-UkEG3Z3u46eut3sz7aoD55oqgw",
+    authDomain: "bae-aryeong-birthday.firebaseapp.com",
+    projectId: "bae-aryeong-birthday",
+    storageBucket: "bae-aryeong-birthday.firebasestorage.app",
+    messagingSenderId: "263081607738",
+    appId: "1:263081607738:web:feb8c8a6baa9e11299ab03",
+    measurementId: "G-XN2TT4DD3B"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const guestbookCol = collection(db, "guestbook");
+
+  const form = document.getElementById("guestbookForm");
+  const nameInput = document.getElementById("guestName");
+  const textInput = document.getElementById("guestText");
+  const submitBtn = document.getElementById("guestSubmitBtn");
+  const statusEl = document.getElementById("msgStatus");
+  const listEl = document.getElementById("msgList");
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, s => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[s]));
+  }
+
+  function formatDate(ts){
+    if(!ts || typeof ts.toDate !== "function") return "방금 전";
+    const d = ts.toDate();
+    return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
+  }
+
+  const q = query(guestbookCol, orderBy("createdAt", "desc"));
+  onSnapshot(q, (snapshot) => {
+    if(snapshot.empty){
+      listEl.innerHTML = `<div class="msg-item"><p class="msg-body">아직 등록된 축하 메시지가 없습니다. 첫 번째 메시지를 남겨주세요!</p></div>`;
+      statusEl.textContent = "";
+      return;
+    }
+
+    listEl.innerHTML = snapshot.docs.map(docSnap => {
+      const data = docSnap.data();
+      return `
+        <div class="msg-item">
+          <div class="msg-head">
+            <b>${escapeHtml(data.name || "익명")}</b>
+            <span>${escapeHtml(formatDate(data.createdAt))}</span>
+          </div>
+          <p class="msg-body">${escapeHtml(data.text || "")}</p>
+        </div>
+      `;
+    }).join("");
+    statusEl.textContent = "";
+  }, (err) => {
+    console.error("Firestore 읽기 오류:", err);
+    statusEl.textContent = "메시지를 불러오는 중 문제가 발생했습니다. Firestore Database 생성 및 규칙을 확인해 주세요.";
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = nameInput.value.trim();
+    const text = textInput.value.trim();
+
+    if(!name || !text) return;
+    if(name.length > 20){
+      statusEl.textContent = "성함/닉네임은 20자 이내로 입력해 주세요.";
+      return;
+    }
+    if(text.length > 200){
+      statusEl.textContent = "메시지는 200자 이내로 입력해 주세요.";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    statusEl.textContent = "등록 중...";
 
     try{
-      await push(ref(db, "gala_messages"), { name, text, date: dateStr, createdAt: Date.now() });
-      textEl.value = "";
+      await addDoc(guestbookCol, {
+        name,
+        text,
+        createdAt: serverTimestamp()
+      });
+      textInput.value = "";
+      statusEl.textContent = "축하 메시지가 등록되었습니다!";
     } catch(err){
-      alert("메시지 저장 중 오류가 발생했습니다. Firebase 데이터베이스 규칙을 확인해 주세요.");
+      console.error("Firestore 쓰기 오류:", err);
+      statusEl.textContent = "등록에 실패했습니다. Firestore 규칙 및 Database 상태를 확인해 주세요.";
+    } finally {
+      submitBtn.disabled = false;
     }
   });
-}
 </script>
 </body>
 </html>
