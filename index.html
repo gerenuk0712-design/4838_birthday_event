@@ -351,7 +351,7 @@ main{max-width:900px;margin:auto;padding:0 18px 96px}
         <div class="nominees-grid" id="nomineesGrid"></div>
 
         <div class="award-controls">
-          <button class="btn" type="button" id="checkAwardBtn">수상작 확인</button>
+          <button class="btn" type="button" id="checkAwardBtn">정답 확인</button>
         </div>
         <p class="award-feedback" id="awardFeedback"></p>
 
@@ -704,7 +704,7 @@ const AWARDS_DATA = [
     num: "02",
     title: "THE NEXT LIFE AWARD",
     category: "REINCARNATION · ANIMAL EDITION",
-    question: "배아령이 다음 생에 동물로 다시 태어난다면, 가장 잘 어울리는 동물은?",
+    question: "배아령이 다음 생에 동물로 다시 태어난다면, 다시태어나고 싶은 동물은?",
     nominees: ["고양이", "코알라", "코끼리", "판다"],
     answerIndex: 2,
     verdictLabel: "WINNER",
@@ -878,7 +878,7 @@ checkAwardBtn.addEventListener("click", () => {
   }
   if(selectedNominee === item.answerIndex){
     awardFeedback.style.color = "#ffe2a8";
-    awardFeedback.textContent = "정답입니다! 공식 아카이브 기록이 공개되었습니다.";
+    awardFeedback.textContent = "정답입니다! 공식 수상 기록이 봉인 해제되었습니다.";
     revealedAwards.add(awardIndex);
     verdictTag.textContent = item.verdictLabel;
     verdictWinner.textContent = item.verdictText;
